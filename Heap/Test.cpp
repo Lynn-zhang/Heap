@@ -7,9 +7,15 @@ void Test1()
 {
 	int arr[10] = { 10, 16, 18, 12, 11, 13, 15, 17, 14, 19 };
 	Heap<int, Greater> hp(arr, 10);
-	Heap<int> hp1(hp);
-	Heap<int, Less> hp2(arr, 10);
-	cout << hp.Top() << endl;;
+	hp.Print();
+	cout << hp.GetIndex(10)<<endl;
+	hp.PopData(17);
+	hp.Print();
+	cout << hp.GetIndex(17) << endl;
+	
+	//Heap<int> hp1(hp);
+	//Heap<int, Less> hp2(arr, 10);
+	//cout << hp.Top() << endl;;
 	/*hp.Push(20);
 	hp.Pop();*/
 
