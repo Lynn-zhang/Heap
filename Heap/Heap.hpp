@@ -5,7 +5,7 @@
 #include<assert.h>
 using namespace std;
 
-//ÀûÓÃÈİÆ÷ÊÊÅäÆ÷ÊµÏÖ´óĞ¡¶Ñ
+//åˆ©ç”¨å®¹å™¨é€‚é…å™¨å®ç°å¤§å°å †
 
 template<class T>
 struct Less
@@ -26,27 +26,27 @@ struct Greater
 };
 
 //template<class T>
-template <class T, template<class> class Compare = Greater>  //Ä¬ÈÏÊµÏÖ´ó¶Ñ
+template <class T, template<class> class Compare = Greater>  //é»˜è®¤å®ç°å¤§å †
 class Heap
 {
 public:
 	Heap()
 	{}
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	Heap(const T* array,size_t size)
 	{
 		for (size_t i = 0; i < size; i++)
 		{
 			_array.push_back(array[i]);
 		}
-		//½¨¶Ñ
+		//å»ºå †
 		for (int start = (_array.size() - 1 - 1) / 2; start >= 0; --start)
 		{
-			// ´ÓÏÂÍùÉÏ ²¢ ´ÓµÚÒ»¸öÓĞº¢×ÓµÄ¸¸½Úµã¿ªÊ¼ ½øĞĞÏÂµ÷¹¤×÷
+			// ä»ä¸‹å¾€ä¸Š å¹¶ ä»ç¬¬ä¸€ä¸ªæœ‰å­©å­çš„çˆ¶èŠ‚ç‚¹å¼€å§‹ è¿›è¡Œä¸‹è°ƒå·¥ä½œ
 			AdjustDown(start);
 		}
 	}
-	//¿½±´¹¹Ôì
+	//æ‹·è´æ„é€ 
 	Heap(const Heap& hp)
 	{
 		//_array.reserve(hp._array.size());
@@ -55,7 +55,7 @@ public:
 			_array.push_back(hp._array[i]);
 		}
 	}
-	//¸³ÖµÔËËã·ûÖØÔØ
+	//èµ‹å€¼è¿ç®—ç¬¦é‡è½½
 	Heap &operator=(Heap hp)
 	{
 		if (this->_array != hp._array)
@@ -64,44 +64,83 @@ public:
 		}
 		return *this;
 	}
-	//Ìí¼ÓÊı¾İ
+	//æ·»åŠ æ•°æ®
 	void Push(const T x)
 	{
-		// Î²²å È»ºó ÉÏµ÷
+		// å°¾æ’ ç„¶å ä¸Šè°ƒ
 		_array.push_back(x);
 		AdjustUp(_array.size() - 1);
 	}
-	//É¾³ı¶Ñ¶¥
+	//åˆ é™¤å †é¡¶
 	void Pop()
 	{
+		assert(_array.size() > 0);
 		swap(_array[0], _array[_array.size() - 1]);
 		//_array[0] = _array[_array.size() - 1];
 		_array.pop_back();
 		AdjustDown(0);
 	}
-	//·ÃÎÊ¸ù½Úµã
+	//åˆ é™¤æ•°æ®
+	bool PopData(T data)
+	{
+		assert(_array.size()>0);
+		int index=GetIndex(data);
+		if (index != -1)
+		{
+			swap(_array[index], _array[_array.size() - 1]);
+			_array.pop_back();
+			AdjustDown(index);
+			return true;
+		}
+		return false;
+	}
+	//è®¿é—®æ ¹èŠ‚ç‚¹
 	T& Top()
 	{
 		assert(_array.size()>0);
 		return _array[0];
 	}
+	//è¿”å›dataåœ¨äºŒå‰å †ä¸­çš„ç´¢å¼•
+	int GetIndex(T data)
+	{
+		assert(_array.size()>0);
+		for (int i = 0; i < _array.size(); i++)
+		{
+			if (_array[i] == data)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	//æ‰“å°
+	void Print()
+	{
+		if (_array.size() == 0)
+			return;
+		for (int i = 0; i < _array.size(); i++)
+		{
+			cout << _array[i] << " ";
+		}
+		cout << endl;
+	}
 protected:
-	//ÉÏµ÷
-	void AdjustDown(int parent)    // ½¨Ğ¡¶Ñ ½«´óÊıÏòÏÂµ÷£¨½¨´ó¶Ñ ½«Ğ¡ÊıÏòÏÂµ÷£©
+	//ä¸Šè°ƒ
+	void AdjustDown(int parent)    // å»ºå°å † å°†å¤§æ•°å‘ä¸‹è°ƒï¼ˆå»ºå¤§å † å°†å°æ•°å‘ä¸‹è°ƒï¼‰
 	{
 		size_t left = parent * 2 + 1;
 		size_t right = left + 1;
-		Compare<T> cp;           //Èç¹ûÊÇ´ó¶Ñ´«¹ıÀ´¾ÍÊÇÓÃ´ó¶ÑµÄÂß¼­£¬Ğ¡¶Ñ¾ÍÊµÏÖĞ¡¶ÑµÄÂß¼­
+		Compare<T> cp;           //å¦‚æœæ˜¯å¤§å †ä¼ è¿‡æ¥å°±æ˜¯ç”¨å¤§å †çš„é€»è¾‘ï¼Œå°å †å°±å®ç°å°å †çš„é€»è¾‘
 		while (left < _array.size())
 		{
-			// ±È½Ï×óÓÒº¢×Ó£¬±£Ö¤ÏÂ±êleftÎª½ÏĞ¡»ò½Ï´óµÄ½ÚµãÏÂ±ê
+			// æ¯”è¾ƒå·¦å³å­©å­ï¼Œä¿è¯ä¸‹æ ‡leftä¸ºè¾ƒå°æˆ–è¾ƒå¤§çš„èŠ‚ç‚¹ä¸‹æ ‡
 			if (right < _array.size() && cp(_array[right] , _array[left]))
 			{
 				left = right;
 			}
 			if (left<_array.size() && cp(_array[left], _array[parent]))
 			{
-				// ½»»»Ö®ºó»¹Ğè¼ÌĞø ½«Ïà¶Ô½Ï´ó»òÏà¶Ô½ÏĞ¡µÄÊıÑ­»·ÏòÏÂµ÷
+				// äº¤æ¢ä¹‹åè¿˜éœ€ç»§ç»­ å°†ç›¸å¯¹è¾ƒå¤§æˆ–ç›¸å¯¹è¾ƒå°çš„æ•°å¾ªç¯å‘ä¸‹è°ƒ
 				swap(_array[left], _array[parent]);
 				parent = left;
 				left = parent * 2 + 1;
@@ -113,12 +152,12 @@ protected:
 			}
 		}
 	}
-	//ÉÏµ÷
+	//ä¸Šè°ƒ
 	void AdjustUp(int child)
 	{
-		// ³ıÁËÎ²²åµÄÊıx ÆäËüÊı¾İÒÑ¾­°´ÕÕ¶ÑÅÅĞòÅÅºÃÁË ËùÒÔÖ»Ğè½«¸Õ¸ÕÎ²²åµÄÊıx²»¶ÏÍùÉÏµ÷ Ö±µ½½«Ëü·Åµ½ºÏÊÊµÄÎ»ÖÃ  
+		// é™¤äº†å°¾æ’çš„æ•°x å…¶å®ƒæ•°æ®å·²ç»æŒ‰ç…§å †æ’åºæ’å¥½äº† æ‰€ä»¥åªéœ€å°†åˆšåˆšå°¾æ’çš„æ•°xä¸æ–­å¾€ä¸Šè°ƒ ç›´åˆ°å°†å®ƒæ”¾åˆ°åˆé€‚çš„ä½ç½®  
 		int parent = (child - 1) / 2;
-		Compare<T> cp;  //Èç¹ûÊÇ´ó¶Ñ´«¹ıÀ´¾ÍÊÇÓÃ´ó¶ÑµÄÂß¼­£¬Ğ¡¶Ñ¾ÍÊµÏÖĞ¡¶ÑµÄÂß¼­
+		Compare<T> cp;  //å¦‚æœæ˜¯å¤§å †ä¼ è¿‡æ¥å°±æ˜¯ç”¨å¤§å †çš„é€»è¾‘ï¼Œå°å †å°±å®ç°å°å †çš„é€»è¾‘
 		while (child>0)
 		{
 			if (cp( _array[child],_array[parent]))
@@ -129,13 +168,14 @@ protected:
 			}
 			else
 			{
-				// Èç¹ûÌøµ½ÕâÀï£¬¾ÍËµÃ÷´ÎĞòÒÑ¾­ÅÅºÃ£¬ÉÏÃæµÄÊı¶¼Ğ¡ÓÚx
+				// å¦‚æœè·³åˆ°è¿™é‡Œï¼Œå°±è¯´æ˜æ¬¡åºå·²ç»æ’å¥½ï¼Œä¸Šé¢çš„æ•°éƒ½å°äºx
 				break;
 			}
 		}
 	}
+        
 private:
-	vector<T> _array;   //ÓÃvector´æ´¢¶ÑÖĞÊı¾İ
+	vector<T> _array;   //ç”¨vectorå­˜å‚¨å †ä¸­æ•°æ®
 };
 
 template <class T, template<class> class Compare = Greater>
