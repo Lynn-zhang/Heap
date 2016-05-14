@@ -4,24 +4,25 @@
 #include<assert.h>
 using namespace std;
 
-//¶ÑÅÅĞò
+//å †æ’åº
 
-//ÏÂµ÷
-void AdjustDown(int *array, int parent, int size)  // ½¨Ğ¡¶Ñ ½«´óÊıÏòÏÂµ÷
+//ä¸‹è°ƒ
+void AdjustDown(int *array, int parent, int size)  // å»ºå°å † å°†å¤§æ•°å‘ä¸‹è°ƒ
 {
+	assert(array);
 	int left = parent * 2 + 1;
 	int right = left + 1;
 	while (left < size)
 	{
-		// ±È½Ï×óÓÒº¢×Ó£¬±£Ö¤ÏÂ±êleftÎª×îĞ¡µÄ½ÚµãÏÂ±ê
+		// æ¯”è¾ƒå·¦å³å­©å­ï¼Œä¿è¯ä¸‹æ ‡leftä¸ºæœ€å°çš„èŠ‚ç‚¹ä¸‹æ ‡
 		if (right <size && array[right] < array[left])
 		{
 			left = right;
 		}
-		// Èç¹û¸¸½Úµã´óÓÚ×óÓÒº¢×ÓÖĞ½ÏĞ¡µÄ½ÚµãÊ±£¬¾Í½»»»ÕâÁ½¸ö½Úµã£¬Òª±£Ö¤Á½¸ö×Ó½Úµã¶¼´óÓÚ¸¸½Úµã
+		// å¦‚æœçˆ¶èŠ‚ç‚¹å¤§äºå·¦å³å­©å­ä¸­è¾ƒå°çš„èŠ‚ç‚¹æ—¶ï¼Œå°±äº¤æ¢è¿™ä¸¤ä¸ªèŠ‚ç‚¹ï¼Œè¦ä¿è¯ä¸¤ä¸ªå­èŠ‚ç‚¹éƒ½å¤§äºçˆ¶èŠ‚ç‚¹
 		if (left<size && array[parent]>array[left])
 		{
-			// ½»»»Ö®ºó»¹Ğè¼ÌĞø ½«Ïà¶Ô½Ï´óµÄÊıÑ­»·ÏòÏÂµ÷
+			// äº¤æ¢ä¹‹åè¿˜éœ€ç»§ç»­ å°†ç›¸å¯¹è¾ƒå¤§çš„æ•°å¾ªç¯å‘ä¸‹è°ƒ
 			swap(array[left], array[parent]);
 			parent = left;
 			left = parent * 2 + 1;
@@ -33,7 +34,7 @@ void AdjustDown(int *array, int parent, int size)  // ½¨Ğ¡¶Ñ ½«´óÊıÏòÏÂµ÷
 		}
 	}
 }
-//´òÓ¡
+//æ‰“å°
 void Print(int* arr, int size)
 {
 	for (int i = 0; i < size; i++)
@@ -42,9 +43,10 @@ void Print(int* arr, int size)
 	}
 	cout << endl;
 }
-//¶ÑÅÅĞò
+//å †æ’åº
 int* HeapSort(int *heap, int size)
 {
+	assert(heap);
 	for (int start = (size - 1 - 1) / 2; start >= 0; start--)
 	{
 		AdjustDown(heap, start, size);
